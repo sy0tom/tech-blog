@@ -68,9 +68,9 @@ React + Vite で GitHub Pages にブログを公開する方法を紹介しま�
 
 ## GitHub Pagesへの公開
 
-GitHub Pagesへの公開はブランチのディレクトリ指定とGitHub Actionsによるデプロイの2通りある。  
-今回は静的ホスティングのビルドやデータの作成をローカルで行うことが多いため、  
-ブランチのディレクトリ指定で公開する。(GitHub Actionsでの公開方法も[後述](#)する)  
+GitHub Pagesへの公開はブランチのディレクトリ指定とカスタマイズしたGitHub Actionsによるデプロイの2通りある。  
+今回はCIによるビルドは不要なためブランチのディレクトリ指定で公開する。  
+(GitHub Actionsでの公開方法も[後述](#)する)  
 
 ### ブランチのディレクトリ指定での公開方法
 
@@ -92,7 +92,15 @@ GitHub Pagesに公開するには`<root dir>`または`docs`にindex.htmlが存�
 
     ```sh
     > pnpm build
-    > pnpm pages
+    > pnpm gen_pages
     ```
 
-1. 
+1. `Settings > Pages`からページを指定して公開する
+
+    ![Deploy Pages](./images/deploy_pages_by_branch.png)
+
+1. デプロイする
+
+    ![Deploy Pages View](./images/deploy_pages_view.png)
+
+1. 次回以降はGitHub Actionsが登録されているので

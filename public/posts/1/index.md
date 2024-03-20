@@ -69,8 +69,6 @@ React + Vite で GitHub Pages にブログを公開する方法を紹介しま�
 ## GitHub Pagesへの公開
 
 GitHub Pagesへの公開はブランチのディレクトリ指定とカスタマイズしたGitHub Actionsによるデプロイの2通りある。  
-今回はCIによるビルドは不要なためブランチのディレクトリ指定で公開する。  
-(GitHub Actionsでの公開方法も[後述](#)する)  
 
 ### ブランチのディレクトリ指定での公開方法
 
@@ -103,32 +101,6 @@ GitHub Pagesに公開するには`<root dir>`または`docs`にindex.htmlが存�
     ページを公開するとGitHub Actionsが作成される
 
     ![Deploy Pages By Branch Actions](./images/deploy_pages_by_branch_actions.png)
-
-1. 公開されたページを確認する
-    公開されたページを確認すると、リソースが`404`エラーとなるため、`base`を相対パスに変更する。  
-    ![Deploy Pages View](./images/deploy_pages_view.png)  
-    ![Deploy Pages View Console](./images/deploy_pages_view_console.png)  
-    ![Deploy Pages View Element](./images/deploy_pages_view_element.png)  
-
-    - `vite.config.ts`
-
-        ```diff
-          import { defineConfig } from "vite";
-          import react from "@vitejs/plugin-react";
-
-          // <https://vitejs.dev/config/>
-          export default defineConfig({
-            server: {
-               port: 8080,    // ポートを任意の番号に変更
-            },
-        +   base: "/.",      // ベースパスを相対パスに変更
-            plugins: [react()],
-          });
-        ```
-
-1. 再度ビルドしてプッシュするとリソースが正常に読み込まれる
-
-    ![Deploy Pages View Success](./images/deploy_pages_view_success.png)
 
 ### GitHub Actionsでの公開方法
 
@@ -184,3 +156,33 @@ GitHub Pagesに公開するには`<root dir>`または`docs`にindex.htmlが存�
 1. `Settings > Pages`からページを指定して公開する
 
     ![Deploy Pages By Actions](./images/deploy_pages_by_actions.png)
+
+### 公開されたページを確認する
+
+公開されたページを確認すると、リソースが`404`エラーとなるため、`base`を相対パスに変更する。
+
+![Deploy Pages View](./images/deploy_pages_view.png)
+
+![Deploy Pages View Console](./images/deploy_pages_view_console.png)
+
+![Deploy Pages View Element](./images/deploy_pages_view_element.png)
+
+- `vite.config.ts`
+
+    ```diff
+      import { defineConfig } from "vite";
+      import react from "@vitejs/plugin-react";
+
+      // <https://vitejs.dev/config/>
+      export default defineConfig({
+        server: {
+            port: 8080,    // ポートを任意の番号に変更
+        },
+    +   base: "/.",      // ベースパスを相対パスに変更
+        plugins: [react()],
+      });
+    ```
+
+1. 再度ビルドしてプッシュするとリソースが正常に読み込まれる
+
+    ![Deploy Pages View Success](./images/deploy_pages_view_success.png)

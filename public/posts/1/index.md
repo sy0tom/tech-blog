@@ -129,3 +129,58 @@ GitHub Pagesに公開するには`<root dir>`または`docs`にindex.htmlが存�
 1. 再度ビルドしてプッシュするとリソースが正常に読み込まれる
 
     ![Deploy Pages View Success](./images/deploy_pages_view_success.png)
+
+### GitHub Actionsでの公開方法
+
+1. `.github/workflows/deploy-pages.yml`を作成する
+
+    ```yml
+    name: deployPages
+
+    on:
+      push:
+        branches: ["main"]
+      workflow_dispatch:
+
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+
+    concurrency:
+      group: "pages"
+      cancel-in-progress: true
+
+    jobs:
+      deploy:
+        environment:
+          name: github-pages
+          url: ${{ steps.deployment.outputs.page_url }}
+        runs-on: [ubuntu-latest]
+        steps:
+          - name: Checkout
+            uses: actions/checkout@v4
+          - name: Setup Node.js
+            uses: actions/setup-node@v4
+            with:
+              node-version: "20"
+          - name: Setup pnpm
+            run: npm i -g pnpm
+          - name: Install dependencies
+            run: pnpm i --frozen-lockfile
+          - name: Build
+            run: pnpm run build
+          - name: Setup Pages
+            uses: actions/configure-pages@v4
+          - name: Upload artifact
+            uses: actions/upload-pages-artifact@v3
+            with:
+              path: './dist'
+          - name: Deploy to GitHub Pages
+            id: deployment
+            uses: actions/deploy-pages@v4
+    ```
+
+1. `Settings > Pages`からページを指定して公開する
+
+    ![Deploy Pages By Actions](./images/deploy_pages_by_actions.png)

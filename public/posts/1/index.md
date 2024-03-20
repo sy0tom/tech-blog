@@ -103,4 +103,26 @@ GitHub Pagesに公開するには`<root dir>`または`docs`にindex.htmlが存�
 
     ![Deploy Pages View](./images/deploy_pages_view.png)
 
+1. 公開されたページを確認する
+    公開されたページを確認すると、リソースが`404`エラーとなるため、`base`を相対パスに変更する。  
+    ![Deploy Pages View](./images/deploy_pages_view.png)  
+    ![Deploy Pages View](./images/deploy_pages_view_console.png)  
+    ![Deploy Pages View](./images/deploy_pages_view_element.png)  
+
+    1. `vite.config.ts` を以下のように修正する
+
+        ```diff
+          import { defineConfig } from "vite";
+          import react from "@vitejs/plugin-react";
+
+          // <https://vitejs.dev/config/>
+          export default defineConfig({
+            server: {
+               port: 8080,    // ポートを任意の番号に変更
+            },
+        +   base: "/.",      // ベースパスを相対パスに変更
+            plugins: [react()],
+          });
+        ```
+
 1. 次回以降はGitHub Actionsが登録されているので

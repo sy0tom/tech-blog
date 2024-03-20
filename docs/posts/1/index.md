@@ -68,9 +68,9 @@ React + Vite で GitHub Pages にブログを公開する方法を紹介しま�
 
 ## GitHub Pagesへの公開
 
-GitHub Pagesへの公開はブランチのディレクトリ指定とGitHub Actionsによるデプロイの2通りある。  
-今回は静的ホスティングのビルドやデータの作成をローカルで行うことが多いため、  
-ブランチのディレクトリ指定で公開する。(GitHub Actionsでの公開方法も[後述](#)する)  
+GitHub Pagesへの公開はブランチのディレクトリ指定とカスタマイズしたGitHub Actionsによるデプロイの2通りある。  
+今回はCIによるビルドは不要なためブランチのディレクトリ指定で公開する。  
+(GitHub Actionsでの公開方法も[後述](#)する)  
 
 ### ブランチのディレクトリ指定での公開方法
 
@@ -82,7 +82,7 @@ GitHub Pagesに公開するには`<root dir>`または`docs`にindex.htmlが存�
       "scripts": {
         "dev": "vite",
         "build": "tsc && vite build",
-    +   "pages": "rm -rf docs && cp -r dist docs",
+    +   "gen_pages": "rm -rf docs && cp -r dist docs",
         "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
         "preview": "vite preview"
       },
@@ -92,7 +92,37 @@ GitHub Pagesに公開するには`<root dir>`または`docs`にindex.htmlが存�
 
     ```sh
     > pnpm build
-    > pnpm pages
+    > pnpm gen_pages
     ```
 
-1. 
+1. `Settings > Pages`からページを指定して公開する
+
+    ![Deploy Pages](./images/deploy_pages_by_branch.png)
+
+1. デプロイする
+
+    ![Deploy Pages View](./images/deploy_pages_view.png)
+
+1. 公開されたページを確認する
+    公開されたページを確認すると、リソースが`404`エラーとなるため、`base`を相対パスに変更する。  
+    ![Deploy Pages View](./images/deploy_pages_view.png)  
+    ![Deploy Pages View](./images/deploy_pages_view_console.png)  
+    ![Deploy Pages View](./images/deploy_pages_view_element.png)  
+
+    1. `vite.config.ts` を以下のように修正する
+
+        ```diff
+          import { defineConfig } from "vite";
+          import react from "@vitejs/plugin-react";
+
+          // <https://vitejs.dev/config/>
+          export default defineConfig({
+            server: {
+               port: 8080,    // ポートを任意の番号に変更
+            },
+        +   base: "/.",      // ベースパスを相対パスに変更
+            plugins: [react()],
+          });
+        ```
+
+1. 次回以降はGitHub Actionsが登録されているので

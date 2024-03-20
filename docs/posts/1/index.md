@@ -82,7 +82,7 @@ GitHub Pagesに公開するには`<root dir>`または`docs`にindex.htmlが存�
       "scripts": {
         "dev": "vite",
         "build": "tsc && vite build",
-    +   "gen_pages": "rm -rf docs && cp -r dist docs",
+    +   "pages": "rm -rf docs && cp -r dist docs",
         "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
         "preview": "vite preview"
       },

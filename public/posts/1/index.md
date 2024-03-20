@@ -77,16 +77,17 @@ GitHub Pagesへの公開はブランチのディレクトリ指定とカスタ�
 1. 公開用ディレクトリの作成
 GitHub Pagesに公開するには`<root dir>`または`docs`にindex.htmlが存在する必要がある。  
 今回はビルド時に`dist`ディレクトリをコピーして`docs`ディレクトリを作成する。
+    - `package.json`
 
-    ```diff
-      "scripts": {
-        "dev": "vite",
-        "build": "tsc && vite build",
-    +   "gen_pages": "rm -rf docs && cp -r dist docs",
-        "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-        "preview": "vite preview"
-      },
-    ```
+        ```diff
+          "scripts": {
+            "dev": "vite",
+            "build": "tsc && vite build",
+        +   "gen_pages": "rm -rf docs && cp -r dist docs",
+            "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+            "preview": "vite preview"
+          },
+        ```
 
 1. ビルド
 
@@ -97,19 +98,19 @@ GitHub Pagesに公開するには`<root dir>`または`docs`にindex.htmlが存�
 
 1. `Settings > Pages`からページを指定して公開する
 
-    ![Deploy Pages](./images/deploy_pages_by_branch.png)
+    ![Deploy Pages By Branch](./images/deploy_pages_by_branch.png)
 
-1. デプロイする
+    ページを公開するとGitHub Actionsが作成される
 
-    ![Deploy Pages View](./images/deploy_pages_view.png)
+    ![Deploy Pages By Branch Actions](./images/deploy_pages_by_branch_actions.png)
 
 1. 公開されたページを確認する
     公開されたページを確認すると、リソースが`404`エラーとなるため、`base`を相対パスに変更する。  
     ![Deploy Pages View](./images/deploy_pages_view.png)  
-    ![Deploy Pages View](./images/deploy_pages_view_console.png)  
-    ![Deploy Pages View](./images/deploy_pages_view_element.png)  
+    ![Deploy Pages View Console](./images/deploy_pages_view_console.png)  
+    ![Deploy Pages View Element](./images/deploy_pages_view_element.png)  
 
-    1. `vite.config.ts` を以下のように修正する
+    - `vite.config.ts`
 
         ```diff
           import { defineConfig } from "vite";
@@ -125,4 +126,6 @@ GitHub Pagesに公開するには`<root dir>`または`docs`にindex.htmlが存�
           });
         ```
 
-1. 次回以降はGitHub Actionsが登録されているので
+1. 再度ビルドしてプッシュするとリソースが正常に読み込まれる
+
+    ![Deploy Pages View Success](./images/deploy_pages_view_success.png)
